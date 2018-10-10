@@ -21,7 +21,93 @@
                 "command": "mcc.check",
                 "title": "Check Code"
             }
-        ]
+        ],
+        "configuration": {
+			"type": "object",
+			"title": "Compiler customizable C language diagnostician configuration",
+			"properties": {
+				"cccdiag.checkers": {
+					"scope": "resource",
+					"type": "object",
+					"properties": {
+						"onSaved": {
+							"scope": "resource",
+							"type": "array",
+							"default": [
+								{	
+									"cccdiag.maxNumberOfProblems": 100,
+									"compileCommand": "gcc",
+									"includeOptionPrefix": "-I",
+									"includePath" : {
+										"absolute": [],
+										"relative": [] 
+									},
+									"compileOptions": [
+										"-fsyntax-only",
+										"-Wall",
+										"-fdiagnostics-parseable-fixits"
+									],
+									"diagDelimiter": "^.+:[0-9]+:[0-9]+:",
+									"parse": {
+										"encoding": "utf-8",
+										"diagInfoPattern": "^(.+):([0-9]+):([0-9]+):\\s*(.+):.*",
+										"index": {
+											"file_name": 1,
+											"line_pos": 2,
+											"char_pos": 3,
+											"severity": 4
+										},
+										"severityIdentifier": {
+											"error": "error",
+											"warning": "warning",
+											"information":"information",
+											"hint":"hint"
+										}
+									} 
+								}
+							]
+						},
+						"onCommand": {
+							"scope": "resource",
+							"type": "array",
+							"default": [
+								{	
+									"cccdiag.maxNumberOfProblems": 100,
+									"compileCommand": "gcc",
+									"includeOptionPrefix": "-I",
+									"includePath" : {
+										"absolute": [],
+										"relative": [] 
+									},
+									"compileOptions": [
+										"-fsyntax-only",
+										"-Wall",
+										"-fdiagnostics-parseable-fixits"
+									],
+									"diagDelimiter": "^.+:[0-9]+:[0-9]+:",
+									"parse": {
+										"encoding": "utf-8",
+										"diagInfoPattern": "^(.+):([0-9]+):([0-9]+):\\s*(.+):.*",
+										"index": {
+											"file_name": 1,
+											"line_pos": 2,
+											"char_pos": 3,
+											"severity": 4
+										},
+										"severityIdentifier": {
+											"error": "error",
+											"warning": "warning",
+											"information":"information",
+											"hint":"hint"
+										}
+									} 
+								}
+							]
+						}
+					}
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -36,5 +122,8 @@
         "tslint": "^5.8.0",
         "@types/node": "^7.0.43",
         "@types/mocha": "^2.2.42"
+    },
+    "dependencies": {
+        "iconv-lite": "^0.4.24"
     }
 }
