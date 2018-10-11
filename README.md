@@ -1,4 +1,4 @@
-# multi-code-checker README
+# Multi Code Checker for C Language
 
 ## 機能
 
@@ -12,6 +12,15 @@ C言語用のコードチェッカーです。
 
 デフォルト状態でコードチェックを実施する場合は、gccコンパイラをインストールしてください。
 
+## コマンド
+以下のコマンドで'mcc.checkers.onCommand'(後述)に設定したコンパイラによるコードチェックを実行します。
+```
+mcc.check
+または
+Multi Code Chekcer for C Languge: Check Code
+```
+
+
 ## 設定
 
 コードのセーブ時、コマンド実行時に使用するコンパイラの設定が必要です。
@@ -23,13 +32,13 @@ C言語用のコードチェッカーです。
 
 ```typescript
 {
-    compileCommand: string; // 使用するコンパイルコマンド
+    compileCommand: string; // 使用するコンパイルコマンド
     maxNumberOfProblems: number; // 表示するエラー、警告の上限数
     compileOptions: string[]; // コンパイルオプションのリスト
     includeOptionPrefix: string; // インクルード用オプション
     includePath: {
-        absolute: string[]; // インクルードパス（絶対パス）
-        relative: string[]; // インクルードパス(相対パス)
+        absolute: string[]; // インクルードパス（絶対パス）
+        relative: string[]; // インクルードパス(ワークスペースルートからの相対パス)
     }
     diagDelimiter: string; // コンパイルエラーメッセージの区切り文字
     parse: {
@@ -63,9 +72,9 @@ C言語用のコードチェッカーです。
 		    "relative": [] 
 	    },
 	    "compileOptions": [
-		    "-fsyntax-only",
-		    "-Wall",
-	    	"-fdiagnostics-parseable-fixits"
+			"-fsyntax-only",
+			"-Wall",
+			"-fdiagnostics-parseable-fixits"
 	    ],
 	    "diagDelimiter": "^.+:[0-9]+:[0-9]+:",
 	    "parse": {
@@ -95,8 +104,8 @@ C言語用のコードチェッカーです。
 		    "relative": [] 
 		},
 		"compileOptions": [
-            "-fsyntax-only",
-            "-Wall",
+			"-fsyntax-only",
+			"-Wall",
 			"-fdiagnostics-parseable-fixits"
 		],
 		"diagDelimiter": "^.+:[0-9]+:[0-9]+:",
@@ -127,4 +136,5 @@ C言語用のコードチェッカーです。
 ## リリースノート
 
 ### 0.0.1
+
 プロトタイプ初版リリース

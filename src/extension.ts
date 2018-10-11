@@ -30,11 +30,16 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(disposable);
 
+    // After create our diagnosticCollection, 
+    // we can update diagnostic squiggles by _diag.set() method.
     _diag = vscode.languages.createDiagnosticCollection("mcc");
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() {
+    
+    // release diagnostic collection
+    _diag.dispose();
 }
 
 interface CodeChecker {
@@ -108,9 +113,9 @@ function getSetting(document: vscode.TextDocument): Setting | undefined {
     let setting = new Setting;
 
     setting.onSavedChecker = vscode.workspace
-        .getConfiguration('cccdiag', document.uri).get('checkers.onSaved');
+        .getConfiguration('mcc', document.uri).get('checkers.onSaved');
     setting.onCommandChecker = vscode.workspace
-        .getConfiguration('cccdiag', document.uri).get('checkers.onCommand');
+        .getConfiguration('mcc', document.uri).get('checkers.onCommand');
 
     return setting;
 }
@@ -146,6 +151,7 @@ function checkByAll(document: vscode.TextDocument, checkers: CodeChecker[] | und
 
 function check(document: vscode.TextDocument, checker: CodeChecker) {
     
+    // reject except for *.c document
     if(document.languageId !== "c") return;
     
     let includePathOptions = getIncludePathOptions(document, checker);
@@ -174,6 +180,7 @@ function check(document: vscode.TextDocument, checker: CodeChecker) {
                 }
             }
             else {
+                // there is no error
                 let diagnostics: vscode.Diagnostic[] = [];
                 _diag.set(document.uri, diagnostics);
             }

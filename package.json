@@ -11,7 +11,7 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.check",
+        "onCommand:mcc.check",
         "onLanguage:c"
     ],
     "main": "./out/extension",
@@ -19,14 +19,14 @@
         "commands": [
             {
                 "command": "mcc.check",
-                "title": "Check Code"
+                "title": "Multi Code Chekcer for C Languge: Check Code"
             }
         ],
         "configuration": {
 			"type": "object",
-			"title": "Compiler customizable C language diagnostician configuration",
+			"title": "Multi Code Checker for C Language",
 			"properties": {
-				"cccdiag.checkers": {
+				"mcc.checkers": {
 					"scope": "resource",
 					"type": "object",
 					"properties": {
@@ -35,7 +35,7 @@
 							"type": "array",
 							"default": [
 								{	
-									"cccdiag.maxNumberOfProblems": 100,
+									"maxNumberOfProblems": 100,
 									"compileCommand": "gcc",
 									"includeOptionPrefix": "-I",
 									"includePath" : {
@@ -72,7 +72,7 @@
 							"type": "array",
 							"default": [
 								{	
-									"cccdiag.maxNumberOfProblems": 100,
+									"maxNumberOfProblems": 100,
 									"compileCommand": "gcc",
 									"includeOptionPrefix": "-I",
 									"includePath" : {
