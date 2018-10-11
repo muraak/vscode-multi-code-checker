@@ -1,65 +1,130 @@
 # multi-code-checker README
 
-This is the README for your extension "multi-code-checker". After writing up a brief description, we recommend including the following sections.
+## 機能
 
-## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+C言語用のコードチェッカーです。
+ファイルのセーブ時、コマンドの実行時にそれぞれ設定したコンパイラによるコードチェックを実施できます。
 
-For example if there is an image subfolder under your extension project workspace:
+チェックに使用するコンパイラは予めインストールしておく必要があります。
 
-\!\[feature X\]\(images/feature-x.png\)
+## 要求
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+デフォルト状態でコードチェックを実施する場合は、gccコンパイラをインストールしてください。
 
-## Requirements
+## 設定
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+コードのセーブ時、コマンド実行時に使用するコンパイラの設定が必要です。
 
-## Extension Settings
+* `mcc.checkers.onSaved`: セーブ時のチェックに使用するコンパイラ設定のリスト
+* `mcc.checkers.onCommand`: コマンド実行時に使用するコンパイラ設定のリスト
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+コンパイラ設定として以下の情報を設定してください。
 
-For example:
+```typescript
+{
+    compileCommand: string; // 使用するコンパイルコマンド
+    maxNumberOfProblems: number; // 表示するエラー、警告の上限数
+    compileOptions: string[]; // コンパイルオプションのリスト
+    includeOptionPrefix: string; // インクルード用オプション
+    includePath: {
+        absolute: string[]; // インクルードパス（絶対パス）
+        relative: string[]; // インクルードパス(相対パス)
+    }
+    diagDelimiter: string; // コンパイルエラーメッセージの区切り文字
+    parse: {
+        encoding: string; // コンパイラの出力メッセージのエンコーディング
+        diagInfoPattern: string; // コンパイラの出力メッセージ解析用パターン（正規表現）
+        index: {
+            file_name: number; // 解析用パターン内で指定したグループのファイル名に対応するインデックス番号
+            line_pos: number; // 解析用パターン内で指定したグループの行番号に対応するインデックス番号
+            char_pos: number; // 解析用パターン内で指定したグループの列番号に対応するインデックス番号
+            severity: number; // 解析用パターン内で指定したグループの検出種別に対応するインデックス番号
+        }
+        severityIdentifier: {
+            error: string; // 検出種別のうち、エラーを表す文字列
+            warning: string; // 検出種別のうち、警告を表す文字列
+            information: string; // 検出種別のうち、インフォメーションを表す文字列
+            hint: string; // 検出種別のうち、ヒントを表す文字列
+        }
+    }
+}
+```
 
-This extension contributes the following settings:
+## 設定例
+```json
+"mcc.checkers": {
+	"onSaved": [{	
+	    "maxNumberOfProblems": 100,
+	    "compileCommand": "gcc",
+	    "includeOptionPrefix": "-I",
+	    "includePath" : {
+		    "absolute": [],
+		    "relative": [] 
+	    },
+	    "compileOptions": [
+		    "-fsyntax-only",
+		    "-Wall",
+	    	"-fdiagnostics-parseable-fixits"
+	    ],
+	    "diagDelimiter": "^.+:[0-9]+:[0-9]+:",
+	    "parse": {
+		    "encoding": "utf-8",
+		    "diagInfoPattern": "^(.+):([0-9]+):([0-9]+):\\s*(.+):.*",
+		    "index": {
+			    "file_name": 1,
+			    "line_pos": 2,
+			    "char_pos": 3,
+			    "severity": 4
+		    },
+		    "severityIdentifier": {
+			    "error": "error",
+			    "warning": "warning",
+			    "information":"information",
+			    "hint":"hint"
+		    }
+	    } 
+	}],
+                    
+    "onCommand": [{	
+		"maxNumberOfProblems": 100,
+		"compileCommand": "gcc",
+		"includeOptionPrefix": "-I",
+		"includePath" : {
+		    "absolute": [],
+		    "relative": [] 
+		},
+		"compileOptions": [
+            "-fsyntax-only",
+            "-Wall",
+			"-fdiagnostics-parseable-fixits"
+		],
+		"diagDelimiter": "^.+:[0-9]+:[0-9]+:",
+		"parse": {
+			"encoding": "utf-8",
+			"diagInfoPattern": "^(.+):([0-9]+):([0-9]+):\\s*(.+):.*",
+			"index": {
+				"file_name": 1,
+				"line_pos": 2,
+				"char_pos": 3,
+				"severity": 4
+			},
+			"severityIdentifier": {
+				"error": "error",
+				"warning": "warning",
+				"information":"information",
+				"hint":"hint"
+			}
+		} 
+	}]
+}
+```
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+## 既知の問題
 
-## Known Issues
+なし
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## リリースノート
 
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+### 0.0.1
+プロトタイプ初版リリース

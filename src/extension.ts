@@ -45,10 +45,10 @@ interface CodeChecker {
     includePath: {
         absolute: string[];
         relative: string[];
-    }
+    };
     diagDelimiter: string;
     parse: {
-        encoding: string,
+        encoding: string;
         diagInfoPattern: string;
         index: {
             file_name: number;
@@ -62,7 +62,7 @@ interface CodeChecker {
             information: string;
             hint: string;
         }
-    }
+    };
 }
 
 // const defaultChecker: CodeChecker = {
