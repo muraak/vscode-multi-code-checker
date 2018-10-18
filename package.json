@@ -3,7 +3,11 @@
     "displayName": "Multi Code Checker",
     "description": "Check your code by your compiler.",
     "version": "0.0.2",
-    "publisher": "muraak",
+	"publisher": "muraak",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/muraak/vscode-multi-code-checker.git"
+	},
     "engines": {
         "vscode": "^1.27.0"
     },

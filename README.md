@@ -145,7 +145,7 @@ Multi Code Chekcer for C Languge: Check Code
 
 - コードのチェック中，ステータスバーにアイコンを表示するよう変更
 
-<img src="img/progress_icon.png" width="425px" style="margin-left: 50px;"/>
+	![アイコン](img/progress_icon.png)
 
 - ファイルを閉じた際，当該ファイルのチェック結果を"問題"パネルのリストから削除するように変更
 
