@@ -156,13 +156,13 @@ function checkByAll(document: vscode.TextDocument, checkers: CodeChecker[] | und
 function check(document: vscode.TextDocument, checker: CodeChecker) {
     
     // reject except for *.c document
-    if(document.languageId !== "c") return;
+    if(document.languageId !== "c"){ return; }
     
     let includePathOptions = getIncludePathOptions(document, checker);
 
     let args = checker.compileOptions;
 
-    if (includePathOptions) {
+    if (includePathOptions && includePathOptions[0] !== "") {
         args = args.concat(includePathOptions);
     }
 
@@ -202,13 +202,13 @@ function check(document: vscode.TextDocument, checker: CodeChecker) {
 function getIncludePathOptions(document: vscode.TextDocument, settings: CodeChecker) {
     let includeOptions = [""];
 
-    if (settings.includePath.absolute != null && settings.includePath.absolute.length > 0) {
+    if (settings.includePath.absolute !== null && settings.includePath.absolute.length > 0) {
         includeOptions = settings.includePath.absolute.map<string>((value) => {
-            return settings.includeOptionPrefix + value
+            return settings.includeOptionPrefix + value;
         });
     }
 
-    if (settings.includePath.relative != null && settings.includePath.relative.length > 0) {
+    if (settings.includePath.relative !== null && settings.includePath.relative.length > 0) {
         let workPath = getWorkSpaceUri(document);
         if (workPath) {
             if (includeOptions && includeOptions !== [""]) {
@@ -234,9 +234,13 @@ function getWorkSpaceUri(document: vscode.TextDocument) {
     let workspace = vscode.workspace.getWorkspaceFolder(document.uri);
 
     if (workspace)
+    {
         return workspace.uri;
+    }
     else
+    {
         return undefined;
+    }
 }
 
 async function parseDiagnosticMessage(message: string, textDocument: vscode.TextDocument, checker: CodeChecker) {
