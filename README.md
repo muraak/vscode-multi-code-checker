@@ -138,3 +138,15 @@ Multi Code Chekcer for C Languge: Check Code
 ### 0.0.1
 
 プロトタイプ初版リリース
+
+### 0.0.2
+
+軽微な修正
+
+- コードのチェック中，ステータスバーにアイコンを表示するよう変更
+
+<img src="img/progress_icon.png" width="425px" style="margin-left: 50px;"/>
+
+- ファイルを閉じた際，当該ファイルのチェック結果を"問題"パネルのリストから削除するように変更
+
+

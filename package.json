@@ -2,7 +2,7 @@
     "name": "multi-code-checker",
     "displayName": "Multi Code Checker",
     "description": "Check your code by your compiler.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "muraak",
     "engines": {
         "vscode": "^1.27.0"

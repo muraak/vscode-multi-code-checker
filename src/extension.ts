@@ -27,6 +27,10 @@ export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand('mcc.check', onCommand);
 
     vscode.workspace.onDidSaveTextDocument(onSaved);
+    vscode.workspace.onDidCloseTextDocument(e =>{
+        // remove diagnosticCollection of closed document from vscode's problem list
+        _diag.delete(e.uri);
+    });
 
     context.subscriptions.push(disposable);
 
@@ -164,6 +168,11 @@ function check(document: vscode.TextDocument, checker: CodeChecker) {
 
     args = args.concat([path.basename(document.uri.toString())]);
 
+    let sbar_cecking_icon = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+    sbar_cecking_icon.color = "yellow";
+    sbar_cecking_icon.text = "$(pulse)mcc checking...";
+    sbar_cecking_icon.show();
+
     child_process.execFile(checker.compileCommand, args, {
         cwd: path.dirname(vscode.Uri.parse(document.uri.toString()).fsPath),
         encoding: "buffer"
@@ -184,6 +193,9 @@ function check(document: vscode.TextDocument, checker: CodeChecker) {
                 let diagnostics: vscode.Diagnostic[] = [];
                 _diag.set(document.uri, diagnostics);
             }
+
+            sbar_cecking_icon.hide();
+            sbar_cecking_icon.dispose();
         });
 }
 
@@ -239,9 +251,6 @@ async function parseDiagnosticMessage(message: string, textDocument: vscode.Text
         let pattern = new RegExp(checker.parse.diagInfoPattern, "m");
         let match = pattern.exec(error);
 
-        let basename = path.basename(textDocument.uri.toString());
-
-        console.log(basename);
 
         if (match) {
             if (path.basename(textDocument.uri.toString()) === match[checker.parse.index.file_name]) {
