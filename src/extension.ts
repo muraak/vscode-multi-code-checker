@@ -280,23 +280,29 @@ async function parseDiagnosticMessage(message: string, textDocument: vscode.Text
 }
 
 function detectSeverity(text: string, setting: CodeChecker) {
-    if (text.includes(setting.parse.severityIdentifier.error)) {
+    try {
+        if (text.includes(setting.parse.severityIdentifier.error)) {
+            return vscode.DiagnosticSeverity.Error;
+        }
+
+        if (text.includes(setting.parse.severityIdentifier.warning)) {
+            return vscode.DiagnosticSeverity.Warning;
+        }
+
+        if (text.includes(setting.parse.severityIdentifier.information)) {
+            return vscode.DiagnosticSeverity.Information;
+        }
+
+        if (text.includes(setting.parse.severityIdentifier.hint)) {
+            return vscode.DiagnosticSeverity.Hint;
+        }
+
         return vscode.DiagnosticSeverity.Error;
     }
-
-    if (text.includes(setting.parse.severityIdentifier.warning)) {
-        return vscode.DiagnosticSeverity.Warning;
+    catch
+    {
+        return vscode.DiagnosticSeverity.Error;
     }
-
-    if (text.includes(setting.parse.severityIdentifier.information)) {
-        return vscode.DiagnosticSeverity.Information;
-    }
-
-    if (text.includes(setting.parse.severityIdentifier.hint)) {
-        return vscode.DiagnosticSeverity.Hint;
-    }
-
-    return vscode.DiagnosticSeverity.Error;
 }
 
 function showDiagnosticErrorMessage(message: string) {
