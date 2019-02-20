@@ -26,10 +26,10 @@ You should prepare the C compliler or static analysis tool that satisfies follow
 
 ## Configurations
 
-- `mcc.checkers.onSaved`: The array of `compiler information` that will be executed when a C file saved.
-- `mcc.checkers.onCommand`: The array of `compiler information` that will be executed when the `Check Code` command fired.
+- `mcc.checkers.onSaved`: The array of `checker` that will be executed when a C file saved.
+- `mcc.checkers.onCommand`: The array of `checker` that will be executed when the `Check Code` command fired.
 
-`compiler information` is defined as following format:
+`checker` is defined as following format:
 
 ```typescript
 {
