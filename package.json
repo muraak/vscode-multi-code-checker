@@ -1,33 +1,32 @@
 {
-    "name": "multi-code-checker",
-    "displayName": "Multi Code Checker",
-    "description": "Check your code by your compiler.",
-    "version": "0.0.2",
+	"name": "multi-code-checker",
+	"displayName": "Multi Code Checker",
+	"description": "Check your code by your compiler.",
+	"version": "0.0.3",
 	"publisher": "muraak",
 	"icon": "resource/icon.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/muraak/vscode-multi-code-checker.git"
 	},
-    "engines": {
-        "vscode": "^1.27.0"
-    },
-    "categories": [
-        "Other"
-    ],
-    "activationEvents": [
-        "onCommand:mcc.check",
-        "onLanguage:c"
-    ],
-    "main": "./out/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "mcc.check",
-                "title": "Multi Code Chekcer for C Languge: Check Code"
-            }
-        ],
-        "configuration": {
+	"engines": {
+		"vscode": "^1.27.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "mcc.check",
+				"title": "Multi Code Chekcer for C Languge: Check Code"
+			}
+		],
+		"configuration": {
 			"type": "object",
 			"title": "Multi Code Checker for C Language",
 			"properties": {
@@ -41,6 +40,7 @@
 							"default": [
 								{
 									"maxNumberOfProblems": 100,
+									"language": "c",
 									"compileCommand": "gcc",
 									"includeOptionPrefix": "-I",
 									"includePath": {
@@ -78,6 +78,7 @@
 							"default": [
 								{
 									"maxNumberOfProblems": 100,
+									"language": "c",
 									"compileCommand": "gcc",
 									"includeOptionPrefix": "-I",
 									"includePath": {
@@ -122,11 +123,11 @@
 		"test": "npm run compile && node ./node_modules/vscode/bin/test"
 	},
 	"devDependencies": {
-		"typescript": "^2.6.1",
-		"vscode": "^1.1.6",
-		"tslint": "^5.8.0",
+		"@types/mocha": "^2.2.42",
 		"@types/node": "^7.0.43",
-		"@types/mocha": "^2.2.42"
+		"tslint": "^5.8.0",
+		"typescript": "^2.6.1",
+		"vscode": "^1.1.36"
 	},
 	"dependencies": {
 		"iconv-lite": "^0.4.24"

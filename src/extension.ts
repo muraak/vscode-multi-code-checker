@@ -46,10 +46,17 @@ export function deactivate() {
     _diag.dispose();
 }
 
+interface Command{
+    command: string;
+    args: string[];
+}
+
 interface CodeChecker {
     maxNumberOfProblems: number;
+    language: string;
     compileCommand: string;
     compileOptions: string[];
+    afterCompileCommands:Command[];
     includeOptionPrefix: string;
     includePath: {
         absolute: string[];
@@ -155,8 +162,8 @@ function checkByAll(document: vscode.TextDocument, checkers: CodeChecker[] | und
 
 function check(document: vscode.TextDocument, checker: CodeChecker) {
     
-    // reject except for *.c document
-    if(document.languageId !== "c"){ return; }
+    // reject except for the document type specified by checker.language
+    if(document.languageId !== checker.language){ return; }
     
     let includePathOptions = getIncludePathOptions(document, checker);
 
@@ -172,9 +179,10 @@ function check(document: vscode.TextDocument, checker: CodeChecker) {
     sbar_cecking_icon.color = "yellow";
     sbar_cecking_icon.text = "$(pulse)mcc checking...";
     sbar_cecking_icon.show();
+    let curt_dir = path.dirname(vscode.Uri.parse(document.uri.toString()).fsPath);
 
     child_process.execFile(checker.compileCommand, args, {
-        cwd: path.dirname(vscode.Uri.parse(document.uri.toString()).fsPath),
+        cwd: curt_dir,
         encoding: "buffer"
     },
         (error, stdout, stderr) => {
@@ -193,6 +201,16 @@ function check(document: vscode.TextDocument, checker: CodeChecker) {
                 let diagnostics: vscode.Diagnostic[] = [];
                 _diag.set(document.uri, diagnostics);
             }
+
+            // execute commands requires after checking command
+            checker.afterCompileCommands.forEach((cmd) => {
+                          
+                child_process.execFile(cmd.command, cmd.args , {cwd: curt_dir}, (error, stdout, stderr) =>{
+                    return;
+                });  
+    
+            });
+
 
             sbar_cecking_icon.hide();
             sbar_cecking_icon.dispose();
