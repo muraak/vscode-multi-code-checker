@@ -203,4 +203,13 @@ Multi Code Chekcer for C Languge: Check Code
 
 - ファイルを閉じた際，当該ファイルのチェック結果を"問題"パネルのリストから削除するように変更
 
+### 0.0.3
 
+- C言語以外にも対応。(`language`指定)
+
+- llcでのチェック例を追加 
+
+- チェック実行後に指定コマンドを実行できるオプションを追加(`afterCompileCommands`)
+
+Happy VSCode!
+Muraak.
