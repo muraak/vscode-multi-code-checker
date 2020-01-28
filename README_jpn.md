@@ -10,7 +10,7 @@ C言語用のコードチェッカーです。
 
 ## 要求
 
-デフォルト状態でコードチェックを実施する場合は、gccコンパイラをインストールしてください。
+デフォルト状態でコードチェックを実施する場合は、gccコンパイラをインストールしてパスを通してください。
 
 ## コマンド
 以下のコマンドで'mcc.checkers.onCommand'(後述)に設定したコンパイラによるコードチェックを実行します。
@@ -61,73 +61,120 @@ Multi Code Chekcer for C Languge: Check Code
 ```
 
 ## 設定例
-```json
-"mcc.checkers": {
-	"onSaved": [{	
-	    "maxNumberOfProblems": 100,
-	    "compileCommand": "gcc",
-	    "includeOptionPrefix": "-I",
-	    "includePath" : {
-		    "absolute": [],
-		    "relative": [] 
-	    },
-	    "compileOptions": [
-			"-fsyntax-only",
-			"-Wall",
-			"-fdiagnostics-parseable-fixits"
-	    ],
-	    "diagDelimiter": "^.+:[0-9]+:[0-9]+:",
-	    "parse": {
-		    "encoding": "utf-8",
-		    "diagInfoPattern": "^(.+):([0-9]+):([0-9]+):\\s*(.+):.*",
-		    "index": {
-			    "file_name": 1,
-			    "line_pos": 2,
-			    "char_pos": 3,
-			    "severity": 4
+
+- `*.c`ファイルのセーブ時とコマンド実行時に`gcc`によるチェックを実行する設定
+
+	```json
+	"mcc.checkers": {
+		"onSaved": [{	
+			"language": "c",
+		    "maxNumberOfProblems": 100,
+		    "compileCommand": "gcc",
+		    "includeOptionPrefix": "-I",
+		    "includePath" : {
+			    "absolute": [],
+			    "relative": [] 
 		    },
-		    "severityIdentifier": {
-			    "error": "error",
-			    "warning": "warning",
-			    "information":"information",
-			    "hint":"hint"
-		    }
-	    } 
-	}],
-                    
-    "onCommand": [{	
-		"maxNumberOfProblems": 100,
-		"compileCommand": "gcc",
-		"includeOptionPrefix": "-I",
-		"includePath" : {
-		    "absolute": [],
-		    "relative": [] 
-		},
-		"compileOptions": [
-			"-fsyntax-only",
-			"-Wall",
-			"-fdiagnostics-parseable-fixits"
-		],
-		"diagDelimiter": "^.+:[0-9]+:[0-9]+:",
-		"parse": {
-			"encoding": "utf-8",
-			"diagInfoPattern": "^(.+):([0-9]+):([0-9]+):\\s*(.+):.*",
-			"index": {
-				"file_name": 1,
-				"line_pos": 2,
-				"char_pos": 3,
-				"severity": 4
+		    "compileOptions": [
+				"-fsyntax-only",
+				"-Wall",
+				"-fdiagnostics-parseable-fixits"
+		    ],
+		    "diagDelimiter": "^.+:[0-9]+:[0-9]+:",
+		    "parse": {
+			    "encoding": "utf-8",
+			    "diagInfoPattern": "^(.+):([0-9]+):([0-9]+):\\s*(.+):.*",
+			    "index": {
+				    "file_name": 1,
+				    "line_pos": 2,
+				    "char_pos": 3,
+				    "severity": 4
+			    },
+			    "severityIdentifier": {
+				    "error": "error",
+				    "warning": "warning",
+				    "information":"information",
+				    "hint":"hint"
+			    }
+		    } 
+		}],
+	
+	    "onCommand": [{
+			"language": "c",	
+			"maxNumberOfProblems": 100,
+			"compileCommand": "gcc",
+			"includeOptionPrefix": "-I",
+			"includePath" : {
+			    "absolute": [],
+			    "relative": [] 
 			},
-			"severityIdentifier": {
-				"error": "error",
-				"warning": "warning",
-				"information":"information",
-				"hint":"hint"
-			}
-		} 
-	}]
-}
-```
+			"compileOptions": [
+				"-fsyntax-only",
+				"-Wall",
+				"-fdiagnostics-parseable-fixits"
+			],
+			"diagDelimiter": "^.+:[0-9]+:[0-9]+:",
+			"parse": {
+				"encoding": "utf-8",
+				"diagInfoPattern": "^(.+):([0-9]+):([0-9]+):\\s*(.+):.*",
+				"index": {
+					"file_name": 1,
+					"line_pos": 2,
+					"char_pos": 3,
+					"severity": 4
+				},
+				"severityIdentifier": {
+					"error": "error",
+					"warning": "warning",
+					"information":"information",
+					"hint":"hint"
+				}
+			} 
+		}]
+	}
+	```
+
+- `*.ll`のセーブ時に`llc`によるチェックを実行する設定
+
+	```json
+    "mcc.checkers": {
+        "onSaved": [
+            {
+                "language": "llvm",
+                "compileCommand": "llc",
+                "afterCompileCommands": [
+                    {
+                        "command": "cmd",
+                        "args": ["/c del *.null"]
+                    }
+                ],
+                "includeOptionPrefix": "-I",
+                "includePath": {
+                    "relative": [],
+                    "absolute": []
+                },
+                "parse": {
+                    "encoding": "utf-8",
+                    "diagInfoPattern": "^.+:.+:.+:\\s*(.+):([0-9]+):([0-9]+):(.+):",
+                    "index": {
+                        "file_name": 1,
+                        "line_pos": 2,
+                        "char_pos": 3,
+                        "severity": 4,
+                    },
+                    "severityIdentifier": {
+                        "error": "error",
+                        "warning": "warning",
+                    }
+                },
+                "diagDelimiter": "^.+\\([0-9]+,[0-9]+\\):\\s",
+                "compileOptions": [
+                    "-filetype=null"
+                ]
+            }
+        ],
+	}
+	```
 
 ## 既知の問題
 
