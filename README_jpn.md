@@ -32,7 +32,14 @@ Multi Code Chekcer for C Languge: Check Code
 
 ```typescript
 {
-    compileCommand: string; // 使用するコンパイルコマンド
+	language: string; // チェック対象の言語ID
+	compileCommand: string; // 使用するコンパイルコマンド
+	afterCompileCommands:[ // コンパイル実行後に実行するコマンド(必要な場合 e.g. 一時ファイルの削除など)
+		{
+			cmd: string; // コマンド名
+			args: string[]; // コマンド引数リスト
+		},...
+	];
     maxNumberOfProblems: number; // 表示するエラー、警告の上限数
     compileOptions: string[]; // コンパイルオプションのリスト
     includeOptionPrefix: string; // インクルード用オプション
