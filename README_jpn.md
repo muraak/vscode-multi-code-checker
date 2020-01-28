@@ -1,9 +1,9 @@
-# Multi Code Checker for C Language
+# Multi Code Checker for Any Languages
 
 ## 機能
 
 
-C言語用のコードチェッカーです。
+VSCodeで好きなコンパイラで好きな言語のコードチェックをできるようになります。
 ファイルのセーブ時、コマンドの実行時にそれぞれ設定したコンパイラによるコードチェックを実施できます。
 
 チェックに使用するコンパイラは予めインストールしておく必要があります。
@@ -211,5 +211,5 @@ Multi Code Chekcer for C Languge: Check Code
 
 - チェック実行後に指定コマンドを実行できるオプションを追加(`afterCompileCommands`)
 
-Happy VSCode!
+Happy VSCode!<br>
 Muraak.
